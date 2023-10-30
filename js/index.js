@@ -3,6 +3,9 @@
  * @GitHub https://github.com/AF0ns3ca/AlvaroFonsecaHernandez-Ex2.git
  */
 
+//Este codigo no es eficiente del todo, se hacen muchos innersHTML insertando inputs que podrían mejorarse en un solo input en estado HIDDEN que se mostrase cuando se llamase la funcion  pero por falta de tiempo se quedará asi
+
+//Se cargan primero elementos visuales
 document.addEventListener("DOMContentLoaded", () => {
   const screen = document.getElementById("display");
   const btnDeposito = document.getElementById("btn-deposito");
@@ -15,24 +18,22 @@ document.addEventListener("DOMContentLoaded", () => {
   let saldo = 1000;
   let intentosRestantes = 3;
 
-  const pin = () => {
-    screen.innerHTML = `
-    <span>Introduzca pin</span>
-    <input type="text" id="pin">
-`;
-  };
-
+  //Funcion que muestra el saldo al inicio en la pantalla
   const mostrarSaldo = () => {
     screen.innerHTML = `
     <span>Bienvenido</span>
+    <span>Saldo</span>
     <span class="data">$${saldo.toFixed(2)}</span>`;
   };
+
+  //Funcion que muestra el saldo cuando lo hayamos actualizado
   const actualizarSaldo = () => {
     screen.innerHTML = `
     <span>Saldo Actual</span>
     <span class="data">$${saldo.toFixed(2)}</span>`;
   };
 
+  //Funcion para login realizada con prompts y while. Controla numero de intentos
   const login = () => {
     let pin = prompt(
       `Introduzca pin. Intentos restantes: ${intentosRestantes}`
@@ -50,6 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  //Funcion realizada con inputs y salida por la pantalla del cajero para depositar dinero
   const depositarDinero = () => {
     screen.innerHTML = `
         <span>Introduzca la cantidad a depositar</span>
@@ -71,6 +73,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
   };
+
+  //Funcion realizada con inputs y salida por la pantalla del cajero para retirar dinero
   const retirarDinero = () => {
     screen.innerHTML = `
         <span>Introduzca la cantidad a retirar</span>
@@ -91,9 +95,49 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
   };
+
+  //Funcion realizada con inputs y salida por la pantalla del cajero para transferir dinero, en este caso usamos recursividad para que si hay un error el usuario pulsando un boton que aparece en pantalla pueda realizar un nuevo intento
   const transferirDinero = () => {
+    let monto;
+    screen.innerHTML = `
+        <span>Introduzca la cantidad a transferir</span>
+        <input type="number" id="saldoTransf">
+        <button id="btn-transferir">Continuar</button>
+    `;
+    document.getElementById("btn-transferir").addEventListener("click", () => {
+      monto = parseFloat(document.getElementById("saldoTransf").value);
+      screen.innerHTML = `
+        <span>Introduzca la cuenta a la que transferira el dinero</span>
+        <input type="text" id="cuentaTransf">
+        <button id="btn-save-transferir">Continuar</button>
+    `;
+      document
+        .getElementById("btn-save-transferir")
+        .addEventListener("click", () => {
+          let cuenta = document.getElementById("cuentaTransf").value;
+          console.log(cuenta);
+          if (checkIBAN(cuenta) /* cuenta !== ""*/) {
+            saldo -= monto;
+            screen.innerHTML = `
+        <span>Transferencia realizada con exito</span>
+        <span>Cantidad transferida: $${monto}</span>
+        <span>Cuenta destino: ${cuenta}</span>
+        <span>Saldo: $${saldo}</span>
+    `;
+          } else {
+            screen.innerHTML = `
+                  <span>Ha ocurrido un error inesperado. Intentelo otra vez.</span>
+                  <button id="btn-try">Intentar de Nuevo</button>
+                  `;
+            document.getElementById("btn-try").addEventListener("click", () => {
+              transferirDinero();
+            });
+          }
+        });
+    });
   };
 
+  //Funcion realizada con inputs y salida por la pantalla del cajero para cambiar la contraseña, en este caso usamos recursividad para que si hay un error el usuario pulsando un boton que aparece en pantalla pueda realizar un nuevo intento
   const cambiarPass = () => {
     let intentos = 3;
     console.log("btn working");
@@ -111,7 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <button id="btn-save">Guardar Cambios</button>
           `;
         document.getElementById("btn-save").addEventListener("click", () => {
-          console.log(PASS);
+          console.log("Pin: " + PASS);
           PASS = document.getElementById("nuevoPin").value;
           console.log("Nuevo pin: " + PASS);
           screen.innerHTML = `
@@ -121,7 +165,11 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         screen.innerHTML = `
                   <span>Ha ocurrido un error inesperado. Intentelo otra vez.</span>
-              `;
+                  <button id="btn-try">Intentar de Nuevo</button>
+                  `;
+        document.getElementById("btn-try").addEventListener("click", () => {
+          cambiarPass();
+        });
       }
     });
   };
@@ -131,15 +179,17 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "templates/salida.html";
   };
 
-// const estructuraValidaIBAN = (cuentaValidar)  {
-  //   return /^ES\d{22}$/g.test(cuentaValidar);
-  // }
-  
+  //Expresion regular que obliga a meter una cuenta con ES seguido de 20 digitos del 0 al 9
+  const checkIBAN = (iban) => {
+    let regular = /[ES]{2}[0-9]{20}$/;
+    return regular.test(iban);
+  };
 
+  //Llamada a las funciones
   login();
   btnDeposito.addEventListener("click", depositarDinero);
   btnRetiro.addEventListener("click", retirarDinero);
-  //btnTransferir.addEventListener("click", transferirDinero);*/
+  btnTransferir.addEventListener("click", transferirDinero);
   btnCambiar.addEventListener("click", cambiarPass);
   btnSalir.addEventListener("click", salir);
 });
