@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .getElementById("btn-save-retirada")
       .addEventListener("click", () => {
         let retiro = parseFloat(document.getElementById("saldoRet").value);
-        if (retiro < saldo && !isNaN(retiro) && retiro > 0) {
+        if (retiro <= saldo && !isNaN(retiro) && retiro > 0) {
           saldo -= retiro;
           console.log(saldo);
           actualizarSaldo();
