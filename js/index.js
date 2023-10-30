@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  //Funcion realizada con inputs y salida por la pantalla del cajero para depositar dinero
+  //Funcion realizada con inputs y salida por la pantalla del cajero para depositar dinero, en este caso usamos recursividad para que si hay un error el usuario pulsando un boton que aparece en pantalla pueda realizar un nuevo intento
   const depositarDinero = () => {
     screen.innerHTML = `
         <span>Introduzca la cantidad a depositar</span>
@@ -69,12 +69,18 @@ document.addEventListener("DOMContentLoaded", () => {
           actualizarSaldo();
         } else {
           //En este caso de momento no se implementa while que pida todo el rato, si da este mensaje hay que apretar de nuevo el boton
-          screen.innerHTML = `Error en la operación.`;
+          screen.innerHTML = `
+                  <span>Ha ocurrido un error. Introduzca una cantidad a retirar valida.</span>
+                  <button id="btn-try">Intentar de Nuevo</button>
+                  `;
+            document.getElementById("btn-try").addEventListener("click", () => {
+              depositarDinero();
+            });
         }
       });
   };
 
-  //Funcion realizada con inputs y salida por la pantalla del cajero para retirar dinero
+  //Funcion realizada con inputs y salida por la pantalla del cajero para retirar dinero, en este caso usamos recursividad para que si hay un error el usuario pulsando un boton que aparece en pantalla pueda realizar un nuevo intento
   const retirarDinero = () => {
     screen.innerHTML = `
         <span>Introduzca la cantidad a retirar</span>
@@ -91,7 +97,13 @@ document.addEventListener("DOMContentLoaded", () => {
           actualizarSaldo();
         } else {
           //En este caso de momento no se implementa while que pida todo el rato, si da este mensaje hay que apretar de nuevo el boton
-          screen.innerHTML = `Error en la operación.`;
+          screen.innerHTML = `
+                  <span>Ha ocurrido un error. Introduzca una cantidad a retirar valida.</span>
+                  <button id="btn-try">Intentar de Nuevo</button>
+                  `;
+            document.getElementById("btn-try").addEventListener("click", () => {
+              retirarDinero();
+            });
         }
       });
   };
