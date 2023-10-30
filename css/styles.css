@@ -26,6 +26,10 @@
   );
 }
 
+.container h1 {
+    color: #fff;
+}
+
 .wrapper {
   width: 300px;
   font-family: Orbitron;
@@ -36,6 +40,7 @@
   background-color: rgb(142, 142, 142);
   border-radius: 5px;
   padding: 10px;
+  /*Sombreado para la caja*/
   box-shadow: rgba(255, 255, 255, 0.35) 0px 5px 15px;
 }
 
