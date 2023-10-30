@@ -1,4 +1,4 @@
-/*Downloaded font added*/
+/*Fuente descargada añadida*/
 @font-face {
   font-family: "Orbitron";
   src: url("/assets/fonts/orbitron/Orbitron-VariableFont_wght.ttf")
@@ -17,6 +17,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  /*Degradado de negro a gris, minimalista*/
   background: rgb(31, 31, 31);
   background: linear-gradient(
     90deg,
@@ -35,6 +36,7 @@
   background-color: rgb(142, 142, 142);
   border-radius: 5px;
   padding: 10px;
+  box-shadow: rgba(255, 255, 255, 0.35) 0px 5px 15px;
 }
 
 .screen {

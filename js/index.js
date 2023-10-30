@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
     <span class="data">$${saldo.toFixed(2)}</span>`;
   };
 
-  //Funcion para login realizada con prompts y while. Controla numero de intentos
+  //Funcion para login realizada con prompts y while. Controla numero de intentos. Se podria hacer como el resto en inputs y con recursividad pero se ha decidido asi para demostrar el conocimiento de prompt y while
   const login = () => {
     let pin = prompt(
       `Introduzca pin. Intentos restantes: ${intentosRestantes}`
