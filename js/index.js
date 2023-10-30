@@ -193,7 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //Expresion regular que obliga a meter una cuenta con ES seguido de 20 digitos del 0 al 9
   const checkIBAN = (iban) => {
-    let regular = /[ES]{2}[0-9]{20}$/;
+    const regular = /[ES]{2}[0-9]{20}$/;
     return regular.test(iban);
   };
 
